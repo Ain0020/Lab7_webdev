@@ -1,4 +1,7 @@
 <?php
+// Start the session
+session_start();
+
 include 'Database.php';
 include 'Users.php';
 
@@ -19,18 +22,24 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Close the connection
     $db->close();
 
-    // Display the update form with the fetched user data
-    ?>
-    
-    <!DOCTYPE html>
-    <html lang="en">
+    // Set session variables with user data
+    $_SESSION['userDetails'] = $userDetails;
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Update User</title>
+    // Redirect to update form page
+    header("Location: update_form.php");
+    exit(); // Stop further execution
+}
+?>
 
-        <style>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update User</title>
+
+    <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -88,24 +97,21 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         }
     </style>
 
-    </head>
+</head>
 
-    <body>
-        <form action="update.php" method="post">
-            <input type="hidden" name="matric" value="<?php echo $userDetails['matric']; ?>">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" value="<?php echo $userDetails['name']; ?>"><br>
-            <label for="role">Role:</label>
-            <select name="role" id="role" required>
-                <option value="">Please select</option>
-                <option value="lecturer" <?php if ($userDetails['role'] == 'lecturer') echo "selected" ?>>Lecturer</option>
-                <option value="student" <?php if ($userDetails['role'] == 'student') echo "selected" ?>>Student</option>
-            </select><br>
-            <input type="submit" value="Update">
-        </form>
-    </body>
+<body>
+    <form action="update.php" method="post">
+        <input type="hidden" name="matric" value="<?php echo $userDetails['matric']; ?>">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="<?php echo $userDetails['name']; ?>"><br>
+        <label for="role">Role:</label>
+        <select name="role" id="role" required>
+            <option value="">Please select</option>
+            <option value="lecturer" <?php if ($userDetails['role'] == 'lecturer') echo "selected" ?>>Lecturer</option>
+            <option value="student" <?php if ($userDetails['role'] == 'student') echo "selected" ?>>Student</option>
+        </select><br>
+        <input type="submit" value="Update">
+    </form>
+</body>
 
-    </html>
-    <?php
-}
-?>
+</html>

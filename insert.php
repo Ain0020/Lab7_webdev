@@ -1,4 +1,6 @@
 <?php
+session_start(); // Start the session
+
 if(isset($_POST['matric'], $_POST['name'], $_POST['password'], $_POST['role'])) {
     // Check if any of the fields are empty
     if(empty($_POST['matric']) || empty($_POST['name']) || empty($_POST['password']) || empty($_POST['role'])) {
@@ -22,11 +24,14 @@ if(isset($_POST['matric'], $_POST['name'], $_POST['password'], $_POST['role'])) 
     // Register the user using POST data
     $user->createUser($_POST['matric'], $_POST['name'], $_POST['password'], $_POST['role']);
 
+    // Set session variables upon successful registration
+    $_SESSION['registered'] = true;
+
     // Close the connection
     $db->close();
 
     // Redirect to insert page
-    header("Location: insert.php?success=1");
+    header("Location: insert.php");
     exit(); // Stop further execution
 } 
 ?>
@@ -39,12 +44,12 @@ if(isset($_POST['matric'], $_POST['name'], $_POST['password'], $_POST['role'])) 
     <title>Registration</title>
 </head>
 <body>
-    <!-- Display pop-up message using JavaScript -->
+    <!-- Check if registration was successful and display pop-up message using JavaScript -->
     <script>
-        if (<?php echo isset($_GET['success']) ? $_GET['success'] : '0'; ?>) {
+        <?php if(isset($_SESSION['registered']) && $_SESSION['registered']): ?>
             alert("Successfully registered!");
             window.location.href = "login.php"; // Redirect to login page
-        }
+        <?php endif; ?>
     </script>
 </body>
 </html>

@@ -1,8 +1,18 @@
 <?php
+// Start the session
+session_start();
+
 include 'Database.php';
 include 'Users.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
+// Check if the user is logged in
+if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true) {
+    // If not logged in, redirect to login page
+    header("Location: login.php");
+    exit();
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_SESSION['userRole']) && $_SESSION['userRole'] === 'admin') {
     // Retrieve the matric value from the GET request
     $matric = $_GET['matric'];
 
