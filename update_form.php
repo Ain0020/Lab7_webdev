@@ -40,6 +40,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column; /* Added */
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px; /* Added */
         }
 
         form {
@@ -91,6 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     </head>
 
     <body>
+        <h2>Update Form</h2>
         <form action="update.php" method="post">
             <input type="hidden" name="matric" value="<?php echo $userDetails['matric']; ?>">
             <label for="name">Name:</label>
